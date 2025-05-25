@@ -12,7 +12,7 @@ const UserSchema = new Schema(
       trim: true,
       index: true,
     },
-    fullname: {
+    fullName: {
       type: String,
       required: true,
       trim: true,
@@ -55,7 +55,7 @@ UserSchema.pre("save", async function (next) {
     return next();
   }
 
-  this.password = bcrypt.hash(this.password, 10);
+  this.password = await bcrypt.hash(this.password, 10);
   next();
 });
 
@@ -68,7 +68,7 @@ UserSchema.methods.generateAccesToken = function () {
       _id: this.id,
       email: this.email,
       username: this.username,
-      fullname: this.fullname,
+      fullName: this.fullName,
     },
     process.env.ACCESS_TOKEN_SECRET,
     {
